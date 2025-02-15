@@ -1,4 +1,4 @@
-package com.clientflightmod;
+package com.clientflightmod.mixin;
 
 import com.clientflightmod.ClientFlightMod;
 import net.minecraft.entity.player.PlayerEntity;
