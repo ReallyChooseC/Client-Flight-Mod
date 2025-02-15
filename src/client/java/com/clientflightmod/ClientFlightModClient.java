@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
-public class ClientFlightMod implements ClientModInitializer {
+public class ClientFlightModClient implements ClientModInitializer {
     private static boolean flightEnabled = false;
 
     @Override

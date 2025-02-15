@@ -1,6 +1,6 @@
-package com.example.mixin;
+package com.clientflightmod;
 
-import com.example.ClientFlightMod;
+import com.clientflightmod.ClientFlightModClient;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin {
     @Inject(method = "isSpectator", at = @At("HEAD"), cancellable = true)
     private void forceSpectatorAbilities(CallbackInfoReturnable<Boolean> cir) {
-        if (ClientFlightMod.isFlightEnabled()) {
+        if (ClientFlightModClient.isFlightEnabled()) {
             cir.setReturnValue(true);
         }
     }
