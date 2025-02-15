@@ -3,15 +3,15 @@
 	"id": "client-flight-mod",
 	"version": "${version}",
 	"name": "Client Flight Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Client Flight Mod",
 	"authors": [
-		"Me!"
+		"ReallyChooseC"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/ReallyChooseC/Client-Flight-Mod"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/client-flight-mod/icon.png",
 	"environment": "*",
 	"entrypoints": {

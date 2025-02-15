@@ -1,40 +1,24 @@
 package com.clientflightmod;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.text.Text;
+import net.fabricmc.api.ModInitializer;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ClientFlightMod implements ClientModInitializer {
-    private static boolean flightEnabled = false;
+public class ClientFlightMod implements ModInitializer {
+	public static final String MOD_ID = "client-flight-mod";
 
-    @Override
-    public void onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(literal("cfly")
-                .executes(context -> {
-                    flightEnabled = !flightEnabled;
-                    updateFlightState();
-                    context.getSource().sendFeedback(Text.literal("飞行模式 " + (flightEnabled ? "启用" : "禁用")));
-                    return 1;
-                });
-        });
-    }
+	// This logger is used to write text to the console and the log file.
+	// It is considered best practice to use your mod id as the logger's name.
+	// That way, it's clear which mod wrote info, warnings, and errors.
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    private static void updateFlightState() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null) {
-            player.getAbilities().allowFlying = flightEnabled;
-            if (!flightEnabled) {
-                player.getAbilities().flying = false;
-            }
-        }
-    }
+	@Override
+	public void onInitialize() {
+		// This code runs as soon as Minecraft is in a mod-load-ready state.
+		// However, some things (like resources) may still be uninitialized.
+		// Proceed with mild caution.
 
-	public static boolean isFlightEnabled() {
-    	return flightEnabled;
+		LOGGER.info("Hello Fabric world!");
 	}
 }

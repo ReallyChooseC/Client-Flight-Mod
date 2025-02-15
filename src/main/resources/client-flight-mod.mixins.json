@@ -3,7 +3,7 @@
 	"package": "com.clientflightmod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"PlayerEntityMixin"
+		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
