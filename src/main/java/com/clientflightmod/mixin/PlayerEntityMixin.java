@@ -9,14 +9,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-    @Inject(
-        method = "isSpectator()Z",
-        at = @At("HEAD"),
-        cancellable = true
+    @Redirect(
+        method = "isSpectator",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/entity/player/PlayerEntity;isCreative()Z"
+        )
     )
-    private void forceSpectatorAbilities(CallbackInfoReturnable<Boolean> cir) {
-        if (ClientFlightMod.isFlightEnabled()) {
-            cir.setReturnValue(true);
-        }
+    private boolean redirectSpectatorCheck(PlayerEntity instance) {
+        return ClientFlightMod.isFlightEnabled() || instance.isCreative();
     }
 }
