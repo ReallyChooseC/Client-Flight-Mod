@@ -1,24 +1,41 @@
 package com.clientflightmod;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.text.Text;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
-public class ClientFlightMod implements ModInitializer {
-	public static final String MOD_ID = "client-flight-mod";
+public class ClientFlightMod implements ClientModInitializer {
+    private static boolean flightEnabled = false;
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    @Override
+    public void onInitializeClient() {
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+    		dispatcher.register(literal("cfly")
+        		.executes(context -> {
+        		    flightEnabled = !flightEnabled;
+        		    updateFlightState();
+        		    context.getSource().sendFeedback(Text.literal("飞行模式 " + (flightEnabled ? "启用" : "禁用")));
+        		    return 1;
+    		    })
+		    );
+		});
+    }
 
-	@Override
-	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+    private static void updateFlightState() {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player != null) {
+            player.getAbilities().allowFlying = flightEnabled;
+            if (!flightEnabled) {
+                player.getAbilities().flying = false;
+            }
+        }
+    }
 
-		LOGGER.info("Hello Fabric world!");
+	public static boolean isFlightEnabled() {
+    	return flightEnabled;
 	}
 }

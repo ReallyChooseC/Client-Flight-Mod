@@ -17,17 +17,10 @@
 	"entrypoints": {
 		"main": [
 			"com.clientflightmod.ClientFlightMod"
-		],
-		"client": [
-			"com.clientflightmod.ClientFlightModClient"
 		]
 	},
 	"mixins": [
-		"client-flight-mod.mixins.json",
-		{
-			"config": "client-flight-mod.client.mixins.json",
-			"environment": "client"
-		}
+		"client-flight-mod.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",
