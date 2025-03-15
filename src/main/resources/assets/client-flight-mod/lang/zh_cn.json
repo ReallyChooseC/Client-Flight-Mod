@@ -1,0 +1,5 @@
+{
+    "modmenu.descriptionTranslation.clientflightmod": "客户端飞行模组",
+    "clientflightmod.fly.enabled": "§a已启用创造模式飞行",
+    "clientflightmod.fly.disabled": "§c已禁用创造模式飞行"
+}

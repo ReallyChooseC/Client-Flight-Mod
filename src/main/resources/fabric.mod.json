@@ -20,7 +20,6 @@
 		]
 	},
 	"mixins": [
-		"client-flight-mod.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",
