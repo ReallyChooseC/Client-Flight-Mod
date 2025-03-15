@@ -3,7 +3,7 @@
 	"id": "client-flight-mod",
 	"version": "${version}",
 	"name": "Client Flight Mod",
-	"description": "Client Flight Mod",
+	"description": "Adds /cfly command for creative flight",
 	"authors": [
 		"ReallyChooseC"
 	],

@@ -20,7 +20,6 @@ public class ClientFlightMod implements ClientModInitializer {
                         client.player.getAbilities().allowFlying = !canFly;
                         client.player.getAbilities().flying = !canFly;
                         
-                        // 使用语言文件键
                         String translationKey = canFly ? 
                             "clientflightmod.fly.disabled" : 
                             "clientflightmod.fly.enabled";

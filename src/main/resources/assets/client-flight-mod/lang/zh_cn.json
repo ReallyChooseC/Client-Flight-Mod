@@ -1,5 +1,5 @@
 {
-    "modmenu.descriptionTranslation.clientflightmod": "客户端飞行模组",
+    "modmenu.descriptionTranslation.client-flight-mod": "通过/cfly命令切换客户端飞行模式。",
     "clientflightmod.fly.enabled": "§a已启用创造模式飞行",
     "clientflightmod.fly.disabled": "§c已禁用创造模式飞行"
 }
