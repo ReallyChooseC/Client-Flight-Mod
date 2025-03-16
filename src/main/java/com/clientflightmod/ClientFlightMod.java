@@ -41,10 +41,10 @@ public class ClientFlightMod implements ClientModInitializer {
                 .then(ClientCommandManager.literal("toggle").executes(ctx -> { toggleFlight(); return 1; }))
                 .then(ClientCommandManager.literal("elytratoggle").executes(ctx -> { toggleElytra(); return 1; }))
                 .then(ClientCommandManager.literal("speed")
-                        .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.01, 5.0))
+                        .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; })))
                 .then(ClientCommandManager.literal("maxspeed")
-                        .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.1, 5.0))
+                        .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setMaxSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; })))
         ));
 
@@ -61,19 +61,19 @@ public class ClientFlightMod implements ClientModInitializer {
                 Properties props = new Properties();
                 props.load(input);
                 elytraToggle = Boolean.parseBoolean(props.getProperty("elytratoggle", "true"));
-                speed = clamp(Double.parseDouble(props.getProperty("speed", "0.2")), 0.01, 5.0);
-                maxSpeed = clamp(Double.parseDouble(props.getProperty("maxspeed", "1.0")), 0.1, 5.0);
+                speed = clamp(Double.parseDouble(props.getProperty("speed", "0.2")));
+                maxSpeed = clamp(Double.parseDouble(props.getProperty("maxspeed", "1.0")));
             }
         } catch (Exception e) { System.err.println("Failed to load config"); }
     }
 
     private static void createDefaultConfig() throws IOException {
         CONFIG_FILE.getParentFile().mkdirs();
-        Properties props = new Properties();
-        props.setProperty("elytratoggle", "true");
-        props.setProperty("speed", "0.2");
-        props.setProperty("maxspeed", "1.0");
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
+            Properties props = new Properties();
+            props.setProperty("elytratoggle", "true");
+            props.setProperty("speed", "0.2");
+            props.setProperty("maxspeed", "1.0");
             props.store(output, null);
         }
     }
@@ -95,7 +95,6 @@ public class ClientFlightMod implements ClientModInitializer {
         ClientPlayerEntity player = client.player;
         boolean state = !player.getAbilities().allowFlying;
         player.getAbilities().allowFlying = state;
-
         if (!state) player.getAbilities().flying = false;
         sendFeedback("clientflightmod.fly." + (state ? "enabled" : "disabled"));
     }
@@ -107,13 +106,13 @@ public class ClientFlightMod implements ClientModInitializer {
     }
 
     private static void setSpeed(double value) {
-        speed = clamp(value, 0.01, 5.0);
+        speed = clamp(value);
         saveConfig();
         sendFeedback("msg.clientflightmod.speed_set", speed);
     }
 
     private static void setMaxSpeed(double value) {
-        maxSpeed = clamp(value, 0.1, 5.0);
+        maxSpeed = clamp(value);
         saveConfig();
         sendFeedback("msg.clientflightmod.maxspeed_set", maxSpeed);
     }
@@ -142,8 +141,8 @@ public class ClientFlightMod implements ClientModInitializer {
         player.velocityModified = true;
     }
 
-    private static double clamp(double value, double min, double max) {
-        return Math.max(min, Math.min(value, max));
+    private static double clamp(double value) {
+        return Math.max(0.0, value);
     }
 
     private static void sendFeedback(String key, Object... args) {
