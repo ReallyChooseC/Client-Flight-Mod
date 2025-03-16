@@ -19,7 +19,6 @@ public class ClientFlightMod implements ClientModInitializer {
         flyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.clientflightmod.toggleflight",
             InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_K,
             "category.clientflightmod.main"
         ));
 
