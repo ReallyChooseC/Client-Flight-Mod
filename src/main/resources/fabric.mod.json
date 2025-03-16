@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/ReallyChooseC/Client-Flight-Mod"
+		"sources": "https://github.com/ReallyChooseC/Client-Flight-Mod",
 		"issues": "https://github.com/ReallyChooseC/Client-Flight-Mod/issues"
 	},
 	"license": "MIT",
@@ -23,7 +23,9 @@
 	"mixins": [
 	],
 	"depends": {
-        	"minecraft": ">=1.20.5"
+        	"minecraft": [
+				">=1.20.5"
+		],
 		"fabric-api": "*"
 	},
 	"suggests": {
