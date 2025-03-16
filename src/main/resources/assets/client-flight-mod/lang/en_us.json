@@ -2,5 +2,8 @@
     "clientflightmod.fly.enabled": "§aEnabled creative flight",
     "clientflightmod.fly.disabled": "§cDisabled creative flight",
     "key.clientflightmod.toggleflight": "Toggle Flight",
-    "category.clientflightmod.main": "Client Flight Mod"
+    "category.clientflightmod.main": "Client Flight Mod",
+    "msg.clientflightmod.elytra_toggle": "Elytra Boost: %s",
+    "msg.clientflightmod.speed_set": "Boost speed set to %.2f",
+    "msg.clientflightmod.maxspeed_set": "Max speed set to %.2f"
 }
