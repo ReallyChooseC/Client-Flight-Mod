@@ -14,7 +14,7 @@
 	},
 	"license": "MIT",
 	"icon": "assets/client-flight-mod/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"client": [
 			"com.clientflightmod.ClientFlightMod"
@@ -23,9 +23,7 @@
 	"mixins": [
 	],
 	"depends": {
-        	"minecraft": [
-				">=1.20.5"
-		],
+        "minecraft": ">=1.20.5",
 		"fabric-api": "*"
 	},
 	"suggests": {
