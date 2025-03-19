@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "client-flight-mod",
+	"id": "${id}",
 	"version": "${version}",
-	"name": "Client Flight Mod",
+	"name": "${name}",
 	"description": "Adds /cfly command for creative flight",
 	"authors": [
 		"ReallyChooseC"
