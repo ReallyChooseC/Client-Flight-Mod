@@ -22,9 +22,9 @@
 	},
 	"mixins": [
 	],
-	"depends": {
-        "minecraft": "<=1.20.4",
-		"fabric-api": "*"
+	"depends": "minecraft": {
+	">=1.19"
+	"<=1.20.4"
 	},
 	"suggests": {
 	}
