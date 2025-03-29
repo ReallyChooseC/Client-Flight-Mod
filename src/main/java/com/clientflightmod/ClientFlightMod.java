@@ -89,6 +89,13 @@ public class ClientFlightMod implements ClientModInitializer {
         ClientPlayerEntity player = client.player;
         if (player == null || !elytraToggle || !player.getAbilities().allowFlying || !player.isGliding()) return;
 
+        boolean freeCameraActive = false;
+        try {
+            Class<?> cameraClass = Class.forName("fi.dy.masa.tweakeroo.util.CameraEntity");
+            Object cameraInstance = cameraClass.getMethod("getCamera").invoke(null);
+            freeCameraActive = cameraInstance != null;
+        } catch (Exception ignored) {}
+
         GameOptions options = client.options;
         boolean sprinting = checkPermanentSprint() || options.sprintKey.isPressed();
         float forward = player.input.movementForward;
@@ -102,21 +109,24 @@ public class ClientFlightMod implements ClientModInitializer {
                     0,
                     MathHelper.cos(yaw) * forward + MathHelper.sin(yaw) * sideways
             ).normalize();
-            horizontal = dir.multiply(calculateSpeed(sprinting));
+            horizontal = dir.multiply(calculateSpeed(sprinting, true));
         }
 
         double vertical = 0;
-        if (options.jumpKey.isPressed()) {
-            vertical = calculateSpeed(sprinting) * VERTICAL_RATIO;
-        } else if (options.sneakKey.isPressed()) {
-            vertical = -calculateSpeed(sprinting) * VERTICAL_RATIO;
+        if (!freeCameraActive) {
+            double verticalSpeed = calculateSpeed(false, false) * VERTICAL_RATIO;
+            if (options.jumpKey.isPressed()) {
+                vertical = verticalSpeed;
+            } else if (options.sneakKey.isPressed()) {
+                vertical = -verticalSpeed;
+            }
         }
 
         player.setVelocity(horizontal.add(0, vertical, 0));
         player.velocityModified = true;
     }
 
-    private static double calculateSpeed(boolean sprinting) {
+    private static double calculateSpeed(boolean sprinting, boolean applySprint) {
         try {
             Class<?> configsClass = Class.forName(TWEAKEROO_CONFIGS);
             Class<?> featuresClass = Class.forName(TWEAKEROO_FEATURES);
@@ -131,10 +141,10 @@ public class ClientFlightMod implements ClientModInitializer {
             }
 
             double base = speed * (tweakValue / BASE_TWEAKEROO) * SCALE_FACTOR;
-            return sprinting ? base * 2 : base;
+            return applySprint && sprinting ? base * 2 : base;
         } catch (Exception e) {
             double base = speed * SCALE_FACTOR;
-            return sprinting ? base * 2 : base;
+            return applySprint && sprinting ? base * 2 : base;
         }
     }
 
@@ -156,25 +166,39 @@ public class ClientFlightMod implements ClientModInitializer {
         boolean state = !player.getAbilities().allowFlying;
         player.getAbilities().allowFlying = state;
         if (!state) player.getAbilities().flying = false;
-        sendFeedback("clientflightmod.fly." + (state ? "enabled" : "disabled"));
+        String statusKey = "clientflightmod." + (state ? "enabled" : "disabled");
+        Text message = Text.translatable("clientflightmod.fly")
+                .append(Text.translatable(": "))
+                .append(Text.translatable(statusKey));
+        sendCustomFeedback(message);
     }
 
     private static void toggleElytra() {
         elytraToggle = !elytraToggle;
         saveConfig();
-        sendFeedback("msg.clientflightmod.elytra_toggle", elytraToggle ? "enabled" : "disabled");
+        Text message = Text.translatable("clientflightmod.elytra_toggle")
+                .append(Text.translatable(": "))
+                .append(Text.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
+        sendCustomFeedback(message);
     }
 
     private static void setSpeed(double value) {
         speed = Math.max(0, value);
         saveConfig();
-        sendFeedback("msg.clientflightmod.speed_set", speed);
+        sendFeedback("clientflightmod.speed_set", speed);
     }
 
     private static void sendFeedback(String key, Object... args) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player != null) {
             client.player.sendMessage(Text.translatable(key, args), true);
+        }
+    }
+
+    private static void sendCustomFeedback(Text message) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player != null) {
+            client.player.sendMessage(message, true);
         }
     }
 }
