@@ -1,9 +1,10 @@
 {
     "modmenu.descriptionTranslation.client-flight-mod": "通过/cfly命令切换客户端飞行模式。",
-    "clientflightmod.fly.enabled": "§a已启用创造模式飞行",
-    "clientflightmod.fly.disabled": "§c已禁用创造模式飞行",
+    "clientflightmod.fly": "飞行",
+    "clientflightmod.enabled": "§a启用",
+    "clientflightmod.disabled": "§c禁用",
     "key.clientflightmod.toggleflight": "切换飞行",
     "category.clientflightmod.main": "客户端飞行模组",
-    "msg.clientflightmod.elytra_toggle": "鞘翅加速: %s",
-    "msg.clientflightmod.speed_set": "速度设置为 %.2f"
+    "clientflightmod.elytra_toggle": "鞘翅加速",
+    "clientflightmod.speed_set": "速度设置为 %.2f"
 }
