@@ -11,6 +11,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -50,6 +51,7 @@ public class ClientFlightMod implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.wasPressed()) toggleFlight();
             handleElytraMovement(client);
+            NofallDamage(client);
         });
     }
 
@@ -155,6 +157,16 @@ public class ClientFlightMod implements ClientModInitializer {
             return (boolean) tweakSprint.getClass().getMethod("getBooleanValue").invoke(tweakSprint);
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    private void NofallDamage(MinecraftClient client) {
+        ClientPlayerEntity player = client.player;
+        if (player == null) return;
+
+        if (player.getAbilities().allowFlying) {
+                player.networkHandler
+                        .sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision));
         }
     }
 
