@@ -53,7 +53,7 @@ public class Elytra {
         player.velocityModified = true;
     }
 
-    static boolean checkPermanentSprint() {
+    private static boolean checkPermanentSprint() {
         try {
             Class<?> featuresClass = Class.forName(TWEAKEROO_FEATURES);
             Object tweakSprint = featuresClass.getField("TWEAK_PERMANENT_SPRINT").get(null);
@@ -63,7 +63,7 @@ public class Elytra {
         }
     }
 
-    static double calculateSpeed(boolean sprinting, boolean applySprint) {
+    private static double calculateSpeed(boolean sprinting, boolean applySprint) {
         try {
             Class<?> configsClass = Class.forName(TWEAKEROO_CONFIGS);
             Class<?> featuresClass = Class.forName(TWEAKEROO_FEATURES);
