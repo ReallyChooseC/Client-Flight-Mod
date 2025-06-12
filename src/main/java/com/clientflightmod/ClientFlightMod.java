@@ -22,14 +22,15 @@ import java.util.Properties;
 
 public class ClientFlightMod implements ClientModInitializer {
     private static KeyBinding flyKey;
-    private static final File CONFIG_FILE = new File("config/clientflight.cfg");
-    public static boolean elytraToggle = true;
-    public static double speed = 1.0;
-    private static final double BASE_TWEAKEROO = 0.064;
-    private static final double SCALE_FACTOR = 0.703;
-    private static final double VERTICAL_RATIO = 0.689;
-    private static final String TWEAKEROO_CONFIGS = "fi.dy.masa.tweakeroo.config.Configs";
-    private static final String TWEAKEROO_FEATURES = "fi.dy.masa.tweakeroo.config.FeatureToggle";
+    static final File CONFIG_FILE = new File("config/clientflight.cfg");
+    static boolean elytraToggle = true;
+    static boolean nofallToggle = true;
+    static double speed = 1.0;
+    static final double BASE_TWEAKEROO = 0.064;
+    static final double SCALE_FACTOR = 0.703;
+    static final double VERTICAL_RATIO = 0.689;
+    static final String TWEAKEROO_CONFIGS = "fi.dy.masa.tweakeroo.config.Configs";
+    static final String TWEAKEROO_FEATURES = "fi.dy.masa.tweakeroo.config.FeatureToggle";
 
     @Override
     public void onInitializeClient() {
@@ -43,9 +44,11 @@ public class ClientFlightMod implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("cfly")
                 .then(ClientCommandManager.literal("toggle").executes(ctx -> { toggleFlight(); return 1; }))
                 .then(ClientCommandManager.literal("elytratoggle").executes(ctx -> { toggleElytra(); return 1; }))
+                .then(ClientCommandManager.literal("nofalltoggle").executes(ctx -> { toggleNofall(); return 1; }))
                 .then(ClientCommandManager.literal("speed")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
+
                 )));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
