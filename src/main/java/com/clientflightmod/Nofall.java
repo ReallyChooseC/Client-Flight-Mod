@@ -15,10 +15,10 @@ public class Nofall {
         ClientPlayerEntity player = client.player;
         if (player == null) return;
 
-        if (nofallToggle|!player.isGliding()) {
+        if (nofallToggle|!player.isFallFlying()) {
             if(player.fallDistance > nofallDistance) {
                 player.networkHandler
-                        .sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision));
+                        .sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
             }
         }
     }
