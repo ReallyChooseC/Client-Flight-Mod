@@ -14,7 +14,7 @@ public class Nofall {
     static void NofallDamage(MinecraftClient client) {
         ClientPlayerEntity player = client.player;
         if (player == null) return;
-        if (nofallToggle&&!player.isGliding()&&!player.getMainHandStack().isOf(Items.MACE)) {
+        if (nofallToggle&&!player.isGliding()) {
                 player.networkHandler
                         .sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision));
         }
