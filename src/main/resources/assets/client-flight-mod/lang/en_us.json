@@ -1,9 +1,12 @@
 {
+    "modmenu.descriptionTranslation.client-flight-mod": "Adds /cfly command for creative flight",
     "clientflightmod.fly": "Fly",
     "clientflightmod.enabled": "§aEnabled",
     "clientflightmod.disabled": "§cDisabled",
     "key.clientflightmod.toggleflight": "Toggle Flight",
     "category.clientflightmod.main": "Client Flight Mod",
     "clientflightmod.elytra_toggle": "Elytra Boost",
-    "clientflightmod.speed_set": "Speed set to %.2f"
+    "clientflightmod.nofall_toggle": "No Fall Damage",
+    "clientflightmod.speed_set": "Speed set to %.2f",
+    "clientflightmod.nofallDistance_set": "Nofall Distance set to %.2f"
 }

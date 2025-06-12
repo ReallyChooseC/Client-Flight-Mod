@@ -6,5 +6,7 @@
     "key.clientflightmod.toggleflight": "切换飞行",
     "category.clientflightmod.main": "客户端飞行模组",
     "clientflightmod.elytra_toggle": "鞘翅加速",
-    "clientflightmod.speed_set": "速度设置为 %.2f"
+    "clientflightmod.nofall_toggle": "无摔落伤害",
+    "clientflightmod.speed_set": "速度设置为 %.2f",
+    "clientflightmod.nofallDistance_set": "无摔落距离设置为 %.2f"
 }
