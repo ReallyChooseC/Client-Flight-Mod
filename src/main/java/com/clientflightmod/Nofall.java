@@ -5,7 +5,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
 
-import static com.clientflightmod.ClientFlightMod.*;
+import static com.clientflightmod.ClientFlightMod.nofallDistance;
+import static com.clientflightmod.ClientFlightMod.nofallToggle;
 import static com.clientflightmod.Config.saveConfig;
 import static com.clientflightmod.Feedback.*;
 

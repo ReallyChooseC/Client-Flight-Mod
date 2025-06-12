@@ -13,7 +13,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.*;
+import java.io.File;
 
 import static com.clientflightmod.Config.loadConfig;
 import static com.clientflightmod.Elytra.*;
