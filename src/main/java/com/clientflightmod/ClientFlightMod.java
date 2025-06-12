@@ -26,7 +26,6 @@ public class ClientFlightMod implements ClientModInitializer {
     static boolean elytraToggle = true;
     static boolean nofallToggle = true;
     static double speed = 1.0;
-    static double nofallDistance = 3.0;
     static final double BASE_TWEAKEROO = 0.064;
     static final double SCALE_FACTOR = 0.703;
     static final double VERTICAL_RATIO = 0.689;
@@ -49,11 +48,6 @@ public class ClientFlightMod implements ClientModInitializer {
                 .then(ClientCommandManager.literal("speed")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
-
-                )
-                .then(ClientCommandManager.literal("nofallDistance")
-                        .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
-                                .executes(ctx -> { setNofallDistance(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
 
                 )));
 
