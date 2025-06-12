@@ -19,7 +19,7 @@ public class Config {
         } catch (Exception e) { System.err.println("Failed to load config"); }
     }
 
-    static void createDefaultConfig() throws IOException {
+    private static void createDefaultConfig() throws IOException {
         CONFIG_FILE.getParentFile().mkdirs();
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             Properties props = new Properties();

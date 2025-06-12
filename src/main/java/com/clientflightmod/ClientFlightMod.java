@@ -18,6 +18,7 @@ import java.io.File;
 import static com.clientflightmod.Config.loadConfig;
 import static com.clientflightmod.Elytra.*;
 import static com.clientflightmod.Feedback.sendCustomFeedback;
+import static com.clientflightmod.Nofall.*;
 
 public class ClientFlightMod implements ClientModInitializer {
     private static KeyBinding flyKey;
@@ -44,7 +45,7 @@ public class ClientFlightMod implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("cfly")
                 .then(ClientCommandManager.literal("toggle").executes(ctx -> { toggleFlight(); return 1; }))
                 .then(ClientCommandManager.literal("elytratoggle").executes(ctx -> { toggleElytra(); return 1; }))
-                .then(ClientCommandManager.literal("nofalltoggle").executes(ctx -> { Nofall.toggleNofall(); return 1; }))
+                .then(ClientCommandManager.literal("nofalltoggle").executes(ctx -> { toggleNofall(); return 1; }))
                 .then(ClientCommandManager.literal("speed")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
@@ -52,14 +53,14 @@ public class ClientFlightMod implements ClientModInitializer {
                 )
                 .then(ClientCommandManager.literal("nofallDistance")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
-                                .executes(ctx -> { Nofall.setNofallDistance(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
+                                .executes(ctx -> { setNofallDistance(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
 
                 )));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.wasPressed()) toggleFlight();
             handleElytraMovement(client);
-            Nofall.NofallDamage(client);
+            NofallDamage(client);
         });
     }
 
