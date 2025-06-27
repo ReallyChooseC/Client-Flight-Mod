@@ -14,7 +14,7 @@ import static com.clientflightmod.Feedback.*;
 public class Elytra {
     static void handleElytraMovement(MinecraftClient client) {
         ClientPlayerEntity player = client.player;
-        if (player == null || !elytraToggle || !player.getAbilities().allowFlying || !player.isGliding()) return;
+        if (player == null || !elytraToggle || !player.getAbilities().allowFlying || !player.isFallFlying()) return;
 
         boolean freeCameraActive = false;
         try {
