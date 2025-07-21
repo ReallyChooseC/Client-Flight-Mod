@@ -1,4 +1,4 @@
-package com.clientflightmod;
+package cn.choosec.clientflightmod;
 
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import net.fabricmc.api.ClientModInitializer;
@@ -15,14 +15,14 @@ import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 
-import static com.clientflightmod.Config.loadConfig;
-import static com.clientflightmod.Elytra.*;
-import static com.clientflightmod.Feedback.sendCustomFeedback;
-import static com.clientflightmod.Nofall.*;
+import static cn.choosec.clientflightmod.Config.loadConfig;
+import static cn.choosec.clientflightmod.Elytra.*;
+import static cn.choosec.clientflightmod.Feedback.sendCustomFeedback;
+import static cn.choosec.clientflightmod.Nofall.*;
 
 public class ClientFlightMod implements ClientModInitializer {
     private static KeyBinding flyKey;
-    static final File CONFIG_FILE = new File("config/clientflight.cfg");
+    static final File CONFIG_FILE = new File("config/clientflight.toml");
     static boolean elytraToggle = true;
     static boolean nofallToggle = true;
     static double speed = 1.0;
