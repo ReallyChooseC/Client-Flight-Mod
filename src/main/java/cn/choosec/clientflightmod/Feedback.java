@@ -1,4 +1,4 @@
-package com.clientflightmod;
+package cn.choosec.clientflightmod;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;

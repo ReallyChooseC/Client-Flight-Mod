@@ -1,4 +1,4 @@
-package com.clientflightmod;
+package cn.choosec.clientflightmod;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -7,9 +7,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import static com.clientflightmod.ClientFlightMod.*;
-import static com.clientflightmod.Config.saveConfig;
-import static com.clientflightmod.Feedback.*;
+import static cn.choosec.clientflightmod.ClientFlightMod.*;
+import static cn.choosec.clientflightmod.Config.saveConfig;
+import static cn.choosec.clientflightmod.Feedback.*;
 
 public class Elytra {
     static void handleElytraMovement(MinecraftClient client) {

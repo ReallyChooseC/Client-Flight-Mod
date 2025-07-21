@@ -17,13 +17,14 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.clientflightmod.ClientFlightMod"
+			"cn.choosec.clientflightmod.ClientFlightMod"
 		]
 	},
 	"mixins": [
 	],
 	"depends": {
-		"minecraft": ">1.20.1 <=1.20.4"
+		"minecraft": ">1.20.1 <=1.20.4",
+		"fabric-api": "*"
 	},
 	"suggests": {
 	}
