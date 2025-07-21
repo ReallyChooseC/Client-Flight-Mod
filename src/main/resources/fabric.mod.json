@@ -17,7 +17,7 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.clientflightmod.ClientFlightMod"
+			"cn.choosec.clientflightmod.ClientFlightMod"
 		]
 	},
 	"mixins": [
@@ -26,5 +26,6 @@
 		"minecraft": ">=1.19 <=1.20.1"
 	},
 	"suggests": {
+		"fabric-api": "*"
 	}
 }
