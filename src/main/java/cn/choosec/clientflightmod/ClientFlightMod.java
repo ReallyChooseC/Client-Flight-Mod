@@ -22,7 +22,7 @@ import static cn.choosec.clientflightmod.Nofall.*;
 
 public class ClientFlightMod implements ClientModInitializer {
     private static KeyBinding flyKey;
-    static final File CONFIG_FILE = new File("config/clientflight.toml");
+    static final File CONFIG_FILE = new File("config/clientflight.properties");
     static boolean elytraToggle = true;
     static boolean nofallToggle = true;
     static double speed = 1.0;

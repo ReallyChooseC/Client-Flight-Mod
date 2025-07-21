@@ -25,8 +25,14 @@ public class Elytra {
 
         GameOptions options = client.options;
         boolean sprinting = checkPermanentSprint() || options.sprintKey.isPressed();
-        float forward = player.input.movementForward;
-        float sideways = player.input.movementSideways;
+        float forward = 0.0f;
+        if (player.input.playerInput.forward() != player.input.playerInput.backward()) {
+            forward = player.input.playerInput.forward() ? 1.0f : -1.0f;
+        }
+        float sideways = 0.0f;
+        if (player.input.playerInput.left() != player.input.playerInput.right()) {
+            sideways = player.input.playerInput.left() ? 1.0f : -1.0f;
+        }
 
         Vec3d horizontal = Vec3d.ZERO;
         if (forward != 0 || sideways != 0) {
