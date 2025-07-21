@@ -1,9 +1,9 @@
-package com.clientflightmod;
+package cn.choosec.clientflightmod;
 
 import java.io.*;
 import java.util.Properties;
 
-import static com.clientflightmod.ClientFlightMod.*;
+import static cn.choosec.clientflightmod.ClientFlightMod.*;
 
 public class Config {
     static void loadConfig() {
@@ -24,6 +24,7 @@ public class Config {
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             Properties props = new Properties();
             props.setProperty("elytratoggle", "true");
+            props.setProperty("nofalltoggle", "true");
             props.setProperty("speed", "1.0");
             props.store(output, null);
         }
