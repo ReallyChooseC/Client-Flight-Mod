@@ -2,7 +2,6 @@ package cn.choosec.clientflightmod;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -23,8 +22,7 @@ public class Elytra {
             freeCameraActive = cameraInstance != null;
         } catch (Exception ignored) {}
 
-        GameOptions options = client.options;
-        boolean sprinting = checkPermanentSprint() || options.sprintKey.isPressed();
+        boolean sprinting = checkPermanentSprint() || player.input.playerInput.sprint();
         float forward = 0.0f;
         if (player.input.playerInput.forward() != player.input.playerInput.backward()) {
             forward = player.input.playerInput.forward() ? 1.0f : -1.0f;
