@@ -46,8 +46,8 @@ public class Elytra {
         double vertical = 0;
         if (!freeCameraActive) {
             float verticalways = 0.0f;
-            if (player.input.playerInput.jump() != player.input.playerInput.sneak()) {
-                verticalways = player.input.playerInput.jump() ? 1.0f : -1.0f;
+            if (player.input.jumping != player.input.sneaking) {
+                verticalways = player.input.jumping ? 1.0f : -1.0f;
             }
             vertical = calculateSpeed(false, false) * VERTICAL_RATIO * verticalways;
         }
