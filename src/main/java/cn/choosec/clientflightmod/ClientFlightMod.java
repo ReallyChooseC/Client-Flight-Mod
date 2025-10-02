@@ -7,7 +7,10 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.KeyBinding.Category;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
+import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
@@ -33,11 +36,13 @@ public class ClientFlightMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         loadConfig();
+        Category clientflightmodCategory = KeyBinding.Category
+                .create(Identifier.of("clientflightmod", "main"));
         flyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.clientflightmod.toggleflight",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_UNKNOWN,
-                "category.clientflightmod.main"));
+                clientflightmodCategory));
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("cfly")
                 .then(ClientCommandManager.literal("toggle").executes(ctx -> { toggleFlight(); return 1; }))
