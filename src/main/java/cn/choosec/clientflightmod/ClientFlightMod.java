@@ -13,7 +13,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import org.lwjgl.glfw.GLFW;
 
@@ -33,16 +32,17 @@ public class ClientFlightMod {
     static final String TWEAKEROO_FEATURES = "fi.dy.masa.tweakeroo.config.FeatureToggle";
 
     public ClientFlightMod() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(this::clientSetup);
+        IEventBus eventBus = MinecraftForge.EVENT_BUS;
+        eventBus.register(this);
+        eventBus.addListener(this::onClientTick);
+        eventBus.addListener(this::onRegisterCommands);
+        IEventBus modEventBus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD.bus().get();
         modEventBus.addListener(this::registerKeyBindings);
 
-        MinecraftForge.EVENT_BUS.register(this);
         loadConfig();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        // 初始化代码可以放在这里
     }
 
     private void registerKeyBindings(final RegisterKeyMappingsEvent event) {
@@ -105,7 +105,6 @@ public class ClientFlightMod {
         sendCustomFeedback(message);
     }
 
-    // 添加这些方法的引用
     private static void toggleElytra() {
         Elytra.toggleElytra();
     }

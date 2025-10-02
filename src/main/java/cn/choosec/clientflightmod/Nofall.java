@@ -14,7 +14,6 @@ public class Nofall {
         LocalPlayer player = client.player;
         if (player == null || !nofallToggle || player.isFallFlying()) return;
 
-        // 使用 StatusOnly 子类，它只发送 onGround 状态
         player.connection.send(new ServerboundMovePlayerPacket.StatusOnly(true));
     }
 
