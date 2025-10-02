@@ -47,12 +47,11 @@ public class Elytra {
 
         double vertical = 0;
         if (!freeCameraActive) {
-            double verticalSpeed = calculateSpeed(false, false) * VERTICAL_RATIO;
-            if (options.jumpKey.isPressed()) {
-                vertical = verticalSpeed;
-            } else if (options.sneakKey.isPressed()) {
-                vertical = -verticalSpeed;
+            float verticalways = 0.0f;
+            if (player.input.playerInput.jump() != player.input.playerInput.sneak()) {
+                verticalways = player.input.playerInput.jump() ? 1.0f : -1.0f;
             }
+            vertical = calculateSpeed(false, false) * VERTICAL_RATIO * verticalways;
         }
 
         player.setVelocity(horizontal.add(0, vertical, 0));
