@@ -35,6 +35,7 @@ public class Config {
             Properties props = new Properties();
             props.setProperty("elytratoggle", String.valueOf(elytraToggle));
             props.setProperty("speed", String.valueOf(speed));
+            props.setProperty("nofalltoggle", String.valueOf(nofallToggle));
             props.store(output, null);
         } catch (IOException e) { System.err.println("Failed to save config"); }
     }
