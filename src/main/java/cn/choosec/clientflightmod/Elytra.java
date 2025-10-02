@@ -1,20 +1,20 @@
 package cn.choosec.clientflightmod;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 import static cn.choosec.clientflightmod.ClientFlightMod.*;
 import static cn.choosec.clientflightmod.Config.saveConfig;
 import static cn.choosec.clientflightmod.Feedback.*;
 
 public class Elytra {
-    static void handleElytraMovement(MinecraftClient client) {
-        ClientPlayerEntity player = client.player;
-        if (player == null || !elytraToggle || !player.getAbilities().allowFlying || !player.isFallFlying()) return;
+    static void handleElytraMovement(Minecraft client) {
+        LocalPlayer player = client.player;
+        if (player == null || !elytraToggle || !player.getAbilities().mayfly || !player.isFallFlying()) return;
 
         boolean freeCameraActive = false;
         try {
@@ -23,33 +23,33 @@ public class Elytra {
             freeCameraActive = cameraInstance != null;
         } catch (Exception ignored) {}
 
-        GameOptions options = client.options;
-        boolean sprinting = checkPermanentSprint() || options.sprintKey.isPressed();
-        float forward = player.input.movementForward;
-        float sideways = player.input.movementSideways;
+        KeyMapping[] keyMappings = client.options.keyMappings;
+        boolean sprinting = checkPermanentSprint() || client.options.keySprint.isDown();
+        float forward = player.input.forwardImpulse;
+        float sideways = player.input.leftImpulse;
 
-        Vec3d horizontal = Vec3d.ZERO;
+        Vec3 horizontal = Vec3.ZERO;
         if (forward != 0 || sideways != 0) {
-            float yaw = (float) Math.toRadians(player.getYaw());
-            Vec3d dir = new Vec3d(
-                    -MathHelper.sin(yaw) * forward + MathHelper.cos(yaw) * sideways,
+            float yaw = (float) Math.toRadians(player.getYRot());
+            Vec3 dir = new Vec3(
+                    -Mth.sin(yaw) * forward + Mth.cos(yaw) * sideways,
                     0,
-                    MathHelper.cos(yaw) * forward + MathHelper.sin(yaw) * sideways
+                    Mth.cos(yaw) * forward + Mth.sin(yaw) * sideways
             ).normalize();
-            horizontal = dir.multiply(calculateSpeed(sprinting, true));
+            horizontal = dir.multiply(calculateSpeed(sprinting, true), 0, calculateSpeed(sprinting, true));
         }
 
         double vertical = 0;
         if (!freeCameraActive) {
             float verticalways = 0.0f;
-            if (options.jumpKey.isPressed() != options.sneakKey.isPressed()) {
-                verticalways = options.jumpKey.isPressed() ? 1.0f : -1.0f;
+            if (client.options.keyJump.isDown() != client.options.keyShift.isDown()) {
+                verticalways = client.options.keyJump.isDown() ? 1.0f : -1.0f;
             }
             vertical = calculateSpeed(false, false) * VERTICAL_RATIO * verticalways;
         }
 
-        player.setVelocity(horizontal.add(0, vertical, 0));
-        player.velocityModified = true;
+        player.setDeltaMovement(horizontal.x, vertical, horizontal.z);
+        player.hurtMarked = true;
     }
 
     private static boolean checkPermanentSprint() {
@@ -87,9 +87,9 @@ public class Elytra {
     static void toggleElytra() {
         elytraToggle = !elytraToggle;
         saveConfig();
-        Text message = Text.translatable("clientflightmod.elytra_toggle")
-                .append(Text.translatable(": "))
-                .append(Text.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
+        Component message = Component.translatable("clientflightmod.elytra_toggle")
+                .append(Component.literal(": "))
+                .append(Component.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }
 

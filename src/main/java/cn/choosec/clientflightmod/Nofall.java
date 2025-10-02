@@ -1,27 +1,29 @@
 package cn.choosec.clientflightmod;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.network.chat.Component;
 
 import static cn.choosec.clientflightmod.ClientFlightMod.nofallToggle;
 import static cn.choosec.clientflightmod.Config.saveConfig;
 import static cn.choosec.clientflightmod.Feedback.*;
 
 public class Nofall {
-    static void NofallDamage(MinecraftClient client) {
-        ClientPlayerEntity player = client.player;
+    static void NofallDamage(Minecraft client) {
+        LocalPlayer player = client.player;
         if (player == null || !nofallToggle || player.isFallFlying()) return;
-        player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
+
+        // 使用 StatusOnly 子类，它只发送 onGround 状态
+        player.connection.send(new ServerboundMovePlayerPacket.StatusOnly(true));
     }
 
     static void toggleNofall() {
         nofallToggle = !nofallToggle;
         saveConfig();
-        Text message = Text.translatable("clientflightmod.nofall_toggle")
-                .append(Text.translatable(": "))
-                .append(Text.translatable("clientflightmod." + (nofallToggle ? "enabled" : "disabled")));
+        Component message = Component.translatable("clientflightmod.nofall_toggle")
+                .append(Component.literal(": "))
+                .append(Component.translatable("clientflightmod." + (nofallToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }
 }
