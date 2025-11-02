@@ -6,18 +6,15 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 
 import static cn.choosec.clientflightmod.Config.loadConfig;
 import static cn.choosec.clientflightmod.Elytra.*;
-import static cn.choosec.clientflightmod.Feedback.sendCustomFeedback;
+import static cn.choosec.clientflightmod.Flight.*;
 import static cn.choosec.clientflightmod.Nofall.*;
 
 public class ClientFlightMod implements ClientModInitializer {
@@ -31,6 +28,7 @@ public class ClientFlightMod implements ClientModInitializer {
     static final double VERTICAL_RATIO = 0.689;
     static final String TWEAKEROO_CONFIGS = "fi.dy.masa.tweakeroo.config.Configs";
     static final String TWEAKEROO_FEATURES = "fi.dy.masa.tweakeroo.config.FeatureToggle";
+    static boolean forceflightToggle = false;
 
     @Override
     public void onInitializeClient() {
@@ -45,33 +43,23 @@ public class ClientFlightMod implements ClientModInitializer {
                 .then(ClientCommandManager.literal("toggle").executes(ctx -> { toggleFlight(); return 1; }))
                 .then(ClientCommandManager.literal("elytratoggle").executes(ctx -> { toggleElytra(); return 1; }))
                 .then(ClientCommandManager.literal("nofalltoggle").executes(ctx -> { toggleNofall(); return 1; }))
+                .then(ClientCommandManager.literal("forceflighttoggle").executes(ctx -> { toggleForceFlight(); return 1; }))
                 .then(ClientCommandManager.literal("speed")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
-
                 )));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.wasPressed()) toggleFlight();
             handleElytraMovement(client);
             NofallDamage(client);
+            if (forceflightToggle) {
+                ForceFlight();
+            }
         });
     }
 
-    private static void toggleFlight() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null) return;
 
-        ClientPlayerEntity player = client.player;
-        boolean state = !player.getAbilities().allowFlying;
-        player.getAbilities().allowFlying = state;
-        if (!state) player.getAbilities().flying = false;
-        String statusKey = "clientflightmod." + (state ? "enabled" : "disabled");
-        Text message = Text.translatable("clientflightmod.fly")
-                .append(Text.translatable(": "))
-                .append(Text.translatable(statusKey));
-        sendCustomFeedback(message);
-    }
 
 
 }

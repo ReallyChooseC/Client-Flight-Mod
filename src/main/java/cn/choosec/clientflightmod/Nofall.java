@@ -20,7 +20,7 @@ public class Nofall {
         nofallToggle = !nofallToggle;
         saveConfig();
         Text message = Text.translatable("clientflightmod.nofall_toggle")
-                .append(Text.translatable(": "))
+                .append(Text.literal(": "))
                 .append(Text.translatable("clientflightmod." + (nofallToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }

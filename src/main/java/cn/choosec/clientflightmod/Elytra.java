@@ -92,7 +92,7 @@ public class Elytra {
         elytraToggle = !elytraToggle;
         saveConfig();
         Text message = Text.translatable("clientflightmod.elytra_toggle")
-                .append(Text.translatable(": "))
+                .append(Text.literal(": "))
                 .append(Text.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }
