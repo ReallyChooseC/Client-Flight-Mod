@@ -7,5 +7,7 @@
     "category.clientflightmod.main": "Client Flight Mod",
     "clientflightmod.elytra_toggle": "Elytra Boost",
     "clientflightmod.nofall_toggle": "No Fall Damage",
-    "clientflightmod.speed_set": "Speed set to %.2f"
+    "clientflightmod.speed_set": "Speed set to %.2f",
+    "clientflightmod.forceflight_toggle": "Force Flight",
+    "clientflightmod.forceflight_enabled_warning": "Cannot toggle flight while Force Flight is enabled!"
 }

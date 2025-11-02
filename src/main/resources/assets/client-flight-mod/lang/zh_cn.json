@@ -7,5 +7,7 @@
     "category.clientflightmod.main": "客户端飞行模组",
     "clientflightmod.elytra_toggle": "鞘翅加速",
     "clientflightmod.nofall_toggle": "无摔落伤害",
-    "clientflightmod.speed_set": "速度设置为 %.2f"
+    "clientflightmod.speed_set": "速度设置为 %.2f",
+    "clientflightmod.forceflight_toggle": "强制启用飞行",
+    "clientflightmod.forceflight_enabled_warning": "强制启用飞行时无法切换飞行模式！"
 }

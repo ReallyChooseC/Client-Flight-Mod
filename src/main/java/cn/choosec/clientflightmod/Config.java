@@ -15,6 +15,7 @@ public class Config {
                 elytraToggle = Boolean.parseBoolean(props.getProperty("elytratoggle", "true"));
                 nofallToggle = Boolean.parseBoolean(props.getProperty("nofalltoggle", "true"));
                 speed = Math.max(0, Double.parseDouble(props.getProperty("speed", "1.0")));
+                forceflightToggle = Boolean.parseBoolean(props.getProperty("forceflighttoggle", "false"));
             }
         } catch (Exception e) { System.err.println("Failed to load config"); }
     }
@@ -27,6 +28,7 @@ public class Config {
             props.setProperty("nofalltoggle", "true");
             props.setProperty("speed", "1.0");
             props.store(output, null);
+            props.setProperty("forceflighttoggle", "false");
         }
     }
 
@@ -36,6 +38,7 @@ public class Config {
             props.setProperty("elytratoggle", String.valueOf(elytraToggle));
             props.setProperty("nofalltoggle", String.valueOf(nofallToggle));
             props.setProperty("speed", String.valueOf(speed));
+            props.setProperty("forceflighttoggle", String.valueOf(forceflightToggle));
             props.store(output, null);
         } catch (IOException e) { System.err.println("Failed to save config"); }
     }
