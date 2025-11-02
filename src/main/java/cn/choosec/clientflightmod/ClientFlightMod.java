@@ -47,6 +47,7 @@ public class ClientFlightMod implements ClientModInitializer {
                 .then(ClientCommandManager.literal("speed")
                         .then(ClientCommandManager.argument("value", DoubleArgumentType.doubleArg(0.0))
                                 .executes(ctx -> { setSpeed(DoubleArgumentType.getDouble(ctx, "value")); return 1; }))
+
                 )));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
