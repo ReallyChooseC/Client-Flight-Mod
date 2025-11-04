@@ -9,6 +9,8 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -18,21 +20,22 @@ import static cn.choosec.clientflightmod.Flight.*;
 import static cn.choosec.clientflightmod.Nofall.*;
 
 public class ClientFlightMod implements ClientModInitializer {
+    public static final String MOD_ID = "client-flight-mod";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     private static KeyBinding flyKey;
     static final File CONFIG_FILE = new File("config/clientflight.properties");
-    static boolean elytraToggle = true;
-    static boolean nofallToggle = true;
+    public static boolean elytraToggle = true;
+    public static boolean nofallToggle = true;
     static double speed = 1.0;
     static final double BASE_TWEAKEROO = 0.064;
     static final double SCALE_FACTOR = 0.703;
-    static final double VERTICAL_RATIO = 0.689;
-    static final String TWEAKEROO_CONFIGS = "fi.dy.masa.tweakeroo.config.Configs";
-    static final String TWEAKEROO_FEATURES = "fi.dy.masa.tweakeroo.config.FeatureToggle";
+    public static final double VERTICAL_RATIO = 0.689;
     static boolean forceflightToggle = false;
 
     @Override
     public void onInitializeClient() {
         loadConfig();
+        ReflectionCache.initialize();
         flyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.clientflightmod.toggleflight",
                 InputUtil.Type.KEYSYM,
@@ -51,10 +54,9 @@ public class ClientFlightMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.wasPressed()) toggleFlight();
-            handleElytraMovement(client);
-            NofallDamage(client);
+            noFallDamage(client);
             if (forceflightToggle) {
-                ForceFlight();
+                forceFlight();
             }
         });
     }

@@ -17,18 +17,28 @@ public class Config {
                 speed = Math.max(0, Double.parseDouble(props.getProperty("speed", "1.0")));
                 forceflightToggle = Boolean.parseBoolean(props.getProperty("forceflighttoggle", "false"));
             }
-        } catch (Exception e) { System.err.println("Failed to load config"); }
+        } catch (Exception e) {
+            LOGGER.error("Failed to load config", e);
+        }
     }
 
     private static void createDefaultConfig() throws IOException {
-        CONFIG_FILE.getParentFile().mkdirs();
+        File parentDir = CONFIG_FILE.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                LOGGER.error("Failed to create config directory: {}", parentDir.getAbsolutePath());
+                throw new IOException("Failed to create config directory: " + parentDir.getAbsolutePath());
+            }
+        }
+
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             Properties props = new Properties();
             props.setProperty("elytratoggle", "true");
             props.setProperty("nofalltoggle", "true");
             props.setProperty("speed", "1.0");
-            props.store(output, null);
             props.setProperty("forceflighttoggle", "false");
+            props.store(output, null);
+            LOGGER.info("Created default config file at {}", CONFIG_FILE.getAbsolutePath());
         }
     }
 
@@ -40,6 +50,8 @@ public class Config {
             props.setProperty("speed", String.valueOf(speed));
             props.setProperty("forceflighttoggle", String.valueOf(forceflightToggle));
             props.store(output, null);
-        } catch (IOException e) { System.err.println("Failed to save config"); }
+        } catch (IOException e) {
+            LOGGER.error("Failed to save config", e);
+        }
     }
 }

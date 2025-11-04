@@ -1,6 +1,7 @@
 # Client-Flight-Mod
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/ReallyChooseC/Client-Flight-Mod?style=flat-square)](https://github.com/ReallyChooseC/Client-Flight-Mod)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ReallyChooseC/Client-Flight-Mod)
 
 ## 可用指令列表
 

@@ -38,11 +38,11 @@ public class Flight {
         sendCustomFeedback(message);
 
         if (forceflightToggle) {
-            ForceFlight();
+            forceFlight();
         }
     }
 
-    static void ForceFlight() {
+    static void forceFlight() {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player != null) {
             client.player.getAbilities().allowFlying = true;

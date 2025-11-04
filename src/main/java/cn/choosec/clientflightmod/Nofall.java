@@ -10,10 +10,13 @@ import static cn.choosec.clientflightmod.Config.saveConfig;
 import static cn.choosec.clientflightmod.Feedback.*;
 
 public class Nofall {
-    static void NofallDamage(MinecraftClient client) {
+    static void noFallDamage(MinecraftClient client) {
         ClientPlayerEntity player = client.player;
-        if (player == null || !nofallToggle || player.isGliding()) return;
-        player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision));
+        if (player == null || !nofallToggle || player.isGliding() || player.isCreative()) return;
+
+        player.networkHandler.sendPacket(
+                new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision)
+        );
     }
 
     static void toggleNofall() {

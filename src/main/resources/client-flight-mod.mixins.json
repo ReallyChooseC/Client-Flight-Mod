@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "cn.choosec.clientflightmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "ElytraPhysicsMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
