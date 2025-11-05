@@ -22,7 +22,7 @@ public class ElytraPhysicsMixin {
     private void onTravel(Vec3d movementInput, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity)(Object)this;
         if (entity instanceof ClientPlayerEntity player) {
-            if (player.isGliding() && elytraToggle) {
+            if (player.isGliding() && elytraToggle && player.getAbilities().allowFlying) {
                 ci.cancel();
                 handleElytraMovement(MinecraftClient.getInstance());
             }
