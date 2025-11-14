@@ -3,6 +3,7 @@ package cn.choosec.clientflightmod.mixin;
 import cn.choosec.clientflightmod.ReflectionCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.util.math.MathHelper;
@@ -44,6 +45,7 @@ public class ElytraPhysicsMixin {
             }
         }
 
+        //#if MC>12101
         boolean sprinting = checkPermanentSprint() || player.input.playerInput.sprint();
         float forward = 0.0f;
         if (player.input.playerInput.forward() != player.input.playerInput.backward()) {
@@ -53,6 +55,12 @@ public class ElytraPhysicsMixin {
         if (player.input.playerInput.left() != player.input.playerInput.right()) {
             sideways = player.input.playerInput.left() ? 1.0f : -1.0f;
         }
+        //#else
+        //$$ GameOptions options = client.options;
+        //$$ boolean sprinting = checkPermanentSprint() || options.sprintKey.isPressed();
+        //$$ float forward = player.input.movementForward;
+        //$$ float sideways = player.input.movementSideways;
+        //#endif
 
         Vec3d horizontal = Vec3d.ZERO;
         if (forward != 0 || sideways != 0) {
@@ -68,8 +76,13 @@ public class ElytraPhysicsMixin {
         double vertical = 0;
         if (!freeCameraActive) {
             float verticalways = 0.0f;
+            //#if MC>12101
             if (player.input.playerInput.jump() != player.input.playerInput.sneak()) {
                 verticalways = player.input.playerInput.jump() ? 1.0f : -1.0f;
+            //#else
+            //$$ if (player.input.jumping != player.input.sneaking) {
+            //$$     verticalways = player.input.jumping ? 1.0f : -1.0f;
+            //#endif
             }
             vertical = calculateSpeed(false, false) * VERTICAL_RATIO * verticalways;
         }

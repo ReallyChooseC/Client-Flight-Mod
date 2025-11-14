@@ -1,78 +1,89 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
-	id 'maven-publish'
+    id 'maven-publish'
+    id 'fabric-loom' version '1.13-SNAPSHOT' apply false
+    id 'com.replaymod.preprocess' version 'd452ef7612'
 }
 
-version = project.mod_version
-group = project.maven_group
+preprocess {
+    strictExtraMappings = true
 
-base {
-	archivesName = project.archives_base_name
+    def mc12001 = createNode('1.20.1', 1_20_01, 'yarn')
+    def mc12004 = createNode('1.20.4', 1_20_04, 'yarn')
+    def mc12101 = createNode('1.21.1', 1_21_01, 'yarn')
+    def mc12104 = createNode('1.21.4', 1_21_04, 'yarn')
+    def mc12110 = createNode('1.21.10', 1_21_10, 'yarn')
+
+    mc12004.link(mc12001, null)
+    mc12101.link(mc12004, null)
+    mc12104.link(mc12101, null)
+    mc12104.link(mc12110, null)
 }
 
-repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+tasks.register('buildAndGather') {
+    group = 'build'
+    description = 'Builds all versions and gathers them into root build/libs'
+
+    subprojects {
+        dependsOn project.tasks.named('build').get()
+    }
+
+    doLast {
+        println 'Gathering builds'
+        def rootBuildLibs = rootProject.layout.buildDirectory.dir('libs').get().asFile
+        rootBuildLibs.mkdirs()
+
+        subprojects {
+            def mcVersion = project.name
+            def subprojectLibs = project.layout.buildDirectory.dir('libs').get().asFile
+
+            def minecraftDep = project.findProperty("minecraft_dependency")?.toString() ?: mcVersion
+            def versionSuffix = convertDependencyToSuffix(minecraftDep)
+
+            copy {
+                from(subprojectLibs) {
+                    include '*.jar'
+                    exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
+                }
+                into rootBuildLibs
+
+                rename { filename ->
+                    def baseName = filename.replaceAll(/\.jar$/, '')
+                    if (!baseName.contains("-mc")) {
+                        return "${baseName}-mc${versionSuffix}.jar"
+                    }
+                    return filename
+                }
+
+                duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            }
+        }
+    }
 }
 
-dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+static def convertDependencyToSuffix(String dependency) {
+    def dep = dependency.replaceAll(/\s+/, '')
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    def rangePattern = ~/>=([0-9.]+)<=([0-9.]+)/
+    def rangeMatcher = rangePattern.matcher(dep)
+    if (rangeMatcher.find()) {
+        def minVersion = rangeMatcher.group(1)
+        def maxVersion = rangeMatcher.group(2)
+        return "${minVersion}-${maxVersion}"
+    }
 
-}
+    def minPattern = ~/>=([0-9.]+)/
+    def minMatcher = minPattern.matcher(dep)
+    if (minMatcher.find()) {
+        def version = minMatcher.group(1)
+        return "${version}+"
+    }
 
-processResources {
-	inputs.property "version", project.version
+    def tildePattern = ~/~([0-9.]+)/
+    def tildeMatcher = tildePattern.matcher(dep)
+    if (tildeMatcher.find()) {
+        def version = tildeMatcher.group(1)
+        return "${version}"
+    }
 
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-	inputs.property "archivesName", project.base.archivesName
-
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    return dependency
 }

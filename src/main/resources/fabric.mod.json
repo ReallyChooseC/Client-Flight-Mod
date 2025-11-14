@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "client-flight-mod",
+    "id": "${id}",
 	"version": "${version}",
-	"name": "Client Flight Mod",
+    "name": "${name}",
 	"description": "Adds /cfly command for creative flight",
 	"authors": [
 		"ReallyChooseC"
@@ -24,8 +24,8 @@
       "client-flight-mod.mixins.json"
 	],
 	"depends": {
-        "minecraft": ">1.21.1 <=1.21.8",
-		"fabric-api": "*"
+        "minecraft": "${minecraft_dependency}",
+		"${fabric_api}": "*"
 	},
 	"suggests": {
 	}

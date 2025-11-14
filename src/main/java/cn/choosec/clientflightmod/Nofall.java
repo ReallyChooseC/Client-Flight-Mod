@@ -15,7 +15,14 @@ public class Nofall {
         if (player == null || !nofallToggle || player.isGliding()) return;
 
         player.networkHandler.sendPacket(
-                new PlayerMoveC2SPacket.OnGroundOnly(true, player.horizontalCollision)
+                new PlayerMoveC2SPacket.OnGroundOnly(
+                        true
+                        //#if MC>12101
+                        ,
+                        player.horizontalCollision
+                        //#endif
+                )
+
         );
     }
 
