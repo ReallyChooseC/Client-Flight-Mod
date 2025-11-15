@@ -1,32 +1,35 @@
 {
-	"schemaVersion": 1,
-    "id": "${id}",
-	"version": "${version}",
-    "name": "${name}",
-	"description": "Adds /cfly command for creative flight",
-	"authors": [
-		"ReallyChooseC"
-	],
-	"contact": {
-		"homepage": "https://www.mcmod.cn/class/19023.html",
-		"sources": "https://github.com/ReallyChooseC/Client-Flight-Mod",
-		"issues": "https://github.com/ReallyChooseC/Client-Flight-Mod/issues"
-	},
-	"license": "MIT",
-	"icon": "assets/client-flight-mod/icon.png",
-	"environment": "client",
-	"entrypoints": {
-		"client": [
-          "cn.choosec.clientflightmod.ClientFlightMod"
-		]
-	},
-	"mixins": [
-      "client-flight-mod.mixins.json"
-	],
-	"depends": {
-        "minecraft": "${minecraft_dependency}",
-		"${fabric_api}": "*"
-	},
-	"suggests": {
-	}
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "Adds /cfly command for creative flight",
+  "authors": [
+    "ReallyChooseC"
+  ],
+  "contact": {
+    "homepage": "https://www.mcmod.cn/class/19023.html",
+    "sources": "https://github.com/ReallyChooseC/Client-Flight-Mod",
+    "issues": "https://github.com/ReallyChooseC/Client-Flight-Mod/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/client-flight-mod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "cn.choosec.clientflightmod.ClientFlightMod"
+    ],
+    "modmenu": [
+      "cn.choosec.clientflightmod.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "client-flight-mod.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_dependency}",
+    "${fabric_api}": "*"
+  },
+  "suggests": {
+  }
 }

@@ -75,8 +75,4 @@ public class ClientFlightMod implements ClientModInitializer {
             }
         });
     }
-
-
-
-
 }

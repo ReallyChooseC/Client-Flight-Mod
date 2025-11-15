@@ -22,7 +22,6 @@ public class Nofall {
                         player.horizontalCollision
                         //#endif
                 )
-
         );
     }
 
@@ -34,5 +33,4 @@ public class Nofall {
                 .append(Text.translatable("clientflightmod." + (nofallToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }
-
 }
