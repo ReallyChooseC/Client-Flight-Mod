@@ -30,7 +30,7 @@ tasks.register('collectSubModules') {
         delete fileTree("build/tmp/submods/META-INF/jars")
 
         copy {
-            from(rootProject.layout.buildDirectory.dir('libs').get().asFile) {
+            from(rootProject.layout.buildDirectory.dir('libs/versions').get().asFile) {
                 include '*.jar'
                 exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
             }
