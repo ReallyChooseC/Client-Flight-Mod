@@ -1,4 +1,5 @@
 plugins {
+    id 'base'
     id 'maven-publish'
     id 'fabric-loom' version '1.13-SNAPSHOT' apply false
     id 'com.replaymod.preprocess' version 'd452ef7612'
@@ -24,15 +25,20 @@ tasks.register('buildAndGather') {
     description = 'Builds all versions and gathers them into root build/libs'
 
     subprojects {
-        dependsOn project.tasks.named('build').get()
+        if (project.name != 'fabricWrapper') {
+            dependsOn project.tasks.named('build').get()
+        }
     }
 
     doLast {
-        println 'Gathering builds'
-        def rootBuildLibs = rootProject.layout.buildDirectory.dir('libs').get().asFile
+        def rootBuildLibs = rootProject.layout.buildDirectory.dir('libs/versions').get().asFile
         rootBuildLibs.mkdirs()
 
         subprojects {
+            if (project.name == 'fabricWrapper') {
+                return
+            }
+
             def mcVersion = project.name
             def subprojectLibs = project.layout.buildDirectory.dir('libs').get().asFile
 

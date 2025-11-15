@@ -3,17 +3,17 @@
   "id": "${id}",
   "version": "${version}",
   "name": "${name}",
-  "description": "Adds /cfly command for creative flight",
+  "description": "${description}",
   "authors": [
     "ReallyChooseC"
   ],
   "contact": {
-    "homepage": "https://www.mcmod.cn/class/19023.html",
-    "sources": "https://github.com/ReallyChooseC/Client-Flight-Mod",
-    "issues": "https://github.com/ReallyChooseC/Client-Flight-Mod/issues"
+    "homepage": "${homepage}",
+    "sources": "${sources}",
+    "issues": "${sources}/issues"
   },
-  "license": "MIT",
-  "icon": "assets/client-flight-mod/icon.png",
+  "license": "${license}",
+  "icon": "assets/${id}/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [

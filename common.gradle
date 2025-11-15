@@ -48,7 +48,11 @@ loom {
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", project.mod_version
+
+    from(rootProject.file("icon.png")) {
+        into("assets/${project.mod_id}")
+    }
 
     filesMatching("fabric.mod.json") {
         def fabric_api
@@ -59,11 +63,15 @@ processResources {
         }
 
         expand(
+                "description": project.mod_description,
+                "homepage": project.mod_homepage,
                 "id": project.mod_id,
                 "name": project.mod_name,
-                "version": inputs.properties.version,
+                "license": project.mod_license,
+                "version": inputs.properties.mod_version,
                 "fabric_api": fabric_api,
                 "minecraft_dependency": project.minecraft_dependency,
+                "sources": project.mod_sources
         )
     }
 }

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}-wrapper",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "${description}",
+  "authors": [
+    "ReallyChooseC"
+  ],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "${sources}",
+    "issues": "${sources}/issues"
+  },
+  "license": "${license}",
+  "icon": "assets/${id}/icon.png",
+  "environment": "*",
+  "entrypoints": {},
+  "depends": {},
+  "custom": {}
+}

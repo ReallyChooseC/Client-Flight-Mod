@@ -33,3 +33,6 @@ for (String version : settings.versions) {
     proj.projectDir = file("versions/$version")
     proj.buildFileName = "../../common.gradle"
 }
+
+include(":fabricWrapper")
+project(":fabricWrapper").projectDir = file("fabricWrapper")
