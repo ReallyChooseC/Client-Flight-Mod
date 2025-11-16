@@ -51,6 +51,8 @@ jar {
 processResources {
     outputs.upToDateWhen { false }
 
+    dependsOn collectSubModules
+
     from("${rootDir}/icon.png") {
         into("assets/${project.mod_id}")
     }
@@ -71,13 +73,18 @@ processResources {
         ArrayList<?> mc_condition = []
         ArrayList<?> jars = []
 
+        def jarToProjectMap = [:]
+        fabric_subprojects.each { subproject ->
+            def minecraftDep = subproject.findProperty("minecraft_dependency")?.toString() ?: subproject.name
+            def versionSuffix = rootProject.convertDependencyToSuffix(minecraftDep)
+            def expectedJarName = "${project.archives_base_name}-${project.mod_version}-mc${versionSuffix}.jar"
+            jarToProjectMap[expectedJarName] = subproject
+        }
+
         def jarsDir = file("build/tmp/submods/META-INF/jars")
         if (jarsDir.exists()) {
             jarsDir.listFiles().findAll { it.name.endsWith('.jar') }.each { jarFile ->
-                def matchingProject = fabric_subprojects.find { subproject ->
-                    jarFile.name.contains(subproject.name) ||
-                            jarFile.name.contains(subproject.minecraft_version)
-                }
+                def matchingProject = jarToProjectMap[jarFile.name]
 
                 if (matchingProject) {
                     mc_condition.add("${matchingProject.minecraft_dependency}")

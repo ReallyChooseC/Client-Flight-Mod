@@ -68,7 +68,7 @@ processResources {
                 "id": project.mod_id,
                 "name": project.mod_name,
                 "license": project.mod_license,
-                "version": inputs.properties.mod_version,
+                "version": project.mod_version,
                 "fabric_api": fabric_api,
                 "minecraft_dependency": project.minecraft_dependency,
                 "sources": project.mod_sources
