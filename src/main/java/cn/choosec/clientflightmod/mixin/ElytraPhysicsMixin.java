@@ -3,7 +3,9 @@ package cn.choosec.clientflightmod.mixin;
 import cn.choosec.clientflightmod.ReflectionCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
+//#if MC<=12101
+//$$ import net.minecraft.client.option.GameOptions;
+//#endif
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.util.math.MathHelper;
