@@ -1,18 +1,18 @@
 package cn.choosec.clientflightmod;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 //#if MC>=12109
-//$$ import net.minecraft.client.option.KeyBinding.Category;
-//$$ import net.minecraft.util.Identifier;
-//$$ import net.minecraft.text.Text;
+//$$ import net.minecraft.client.KeyMapping.Category;
+//$$ import net.minecraft.resources.ResourceLocation;
 //#endif
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import static cn.choosec.clientflightmod.Nofall.*;
 public class ClientFlightMod implements ClientModInitializer {
     public static final String MOD_ID = "client-flight-mod";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    private static KeyBinding flyKey;
+    private static KeyMapping flyKey;
     static final File CONFIG_FILE = new File("config/clientflight.properties");
     public static boolean elytraToggle = true;
     public static boolean nofallToggle = true;
@@ -42,19 +42,19 @@ public class ClientFlightMod implements ClientModInitializer {
         loadConfig();
         ReflectionCache.initialize();
         //#if MC<12109
-        flyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        flyKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 "key.clientflightmod.toggleflight",
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_UNKNOWN,
                 "category.clientflightmod.main"));
         //#else
-        //$$        Category clientflightmodCategory = KeyBinding.Category
-        //$$                .create(Identifier.of("clientflightmod", "main"));
-        //$$        flyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-        //$$                "key.clientflightmod.toggleflight",
-        //$$                InputUtil.Type.KEYSYM,
-        //$$                GLFW.GLFW_KEY_UNKNOWN,
-        //$$                clientflightmodCategory));
+        //$$ Category clientflightmodCategory = KeyMapping.Category
+        //$$         .register(ResourceLocation.fromNamespaceAndPath("clientflightmod", "main"));
+        //$$ flyKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+        //$$         "key.clientflightmod.toggleflight",
+        //$$         InputConstants.Type.KEYSYM,
+        //$$         GLFW.GLFW_KEY_UNKNOWN,
+        //$$         clientflightmodCategory));
         //#endif
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("cfly")
@@ -68,7 +68,7 @@ public class ClientFlightMod implements ClientModInitializer {
                 )));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (flyKey.wasPressed()) toggleFlight();
+            if (flyKey.consumeClick()) toggleFlight();
             noFallDamage(client);
             if (forceflightToggle) {
                 forceFlight();

@@ -1,40 +1,40 @@
 package cn.choosec.clientflightmod;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.text.Text;
-
 import static cn.choosec.clientflightmod.ClientFlightMod.forceflightToggle;
 import static cn.choosec.clientflightmod.Feedback.sendCustomFeedback;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+
 public class Flight {
     static void toggleFlight() {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (client.player == null) return;
 
         if (forceflightToggle) {
-            Text message = Text.translatable("clientflightmod.forceflight_enabled_warning");
+            Component message = Component.translatable("clientflightmod.forceflight_enabled_warning");
             sendCustomFeedback(message);
             return;
         }
 
-        ClientPlayerEntity player = client.player;
-        boolean state = !player.getAbilities().allowFlying;
-        player.getAbilities().allowFlying = state;
+        LocalPlayer player = client.player;
+        boolean state = !player.getAbilities().mayfly;
+        player.getAbilities().mayfly = state;
         if (!state) player.getAbilities().flying = false;
         String statusKey = "clientflightmod." + (state ? "enabled" : "disabled");
-        Text message = Text.translatable("clientflightmod.fly")
-                .append(Text.literal(": "))
-                .append(Text.translatable(statusKey));
+        Component message = Component.translatable("clientflightmod.fly")
+                .append(Component.literal(": "))
+                .append(Component.translatable(statusKey));
         sendCustomFeedback(message);
     }
 
     static void toggleForceFlight() {
         forceflightToggle = !forceflightToggle;
         Config.saveConfig();
-        Text message = Text.translatable("clientflightmod.forceflight_toggle")
-                .append(Text.literal(": "))
-                .append(Text.translatable("clientflightmod." + (forceflightToggle ? "enabled" : "disabled")));
+        Component message = Component.translatable("clientflightmod.forceflight_toggle")
+                .append(Component.literal(": "))
+                .append(Component.translatable("clientflightmod." + (forceflightToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
 
         if (forceflightToggle) {
@@ -43,9 +43,9 @@ public class Flight {
     }
 
     static void forceFlight() {
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         if (client.player != null) {
-            client.player.getAbilities().allowFlying = true;
+            client.player.getAbilities().mayfly = true;
         }
     }
 }

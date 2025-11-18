@@ -1,10 +1,10 @@
 package cn.choosec.clientflightmod;
 
-import net.minecraft.text.Text;
-
 import static cn.choosec.clientflightmod.ClientFlightMod.*;
 import static cn.choosec.clientflightmod.Config.saveConfig;
 import static cn.choosec.clientflightmod.Feedback.*;
+
+import net.minecraft.network.chat.Component;
 
 public class Elytra {
     public static boolean checkPermanentSprint() {
@@ -47,9 +47,9 @@ public class Elytra {
     static void toggleElytra() {
         elytraToggle = !elytraToggle;
         saveConfig();
-        Text message = Text.translatable("clientflightmod.elytra_toggle")
-                .append(Text.literal(": "))
-                .append(Text.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
+        Component message = Component.translatable("clientflightmod.elytra_toggle")
+                .append(Component.literal(": "))
+                .append(Component.translatable("clientflightmod." + (elytraToggle ? "enabled" : "disabled")));
         sendCustomFeedback(message);
     }
 
