@@ -3,7 +3,7 @@
   "id": "${id}-wrapper",
   "version": "${version}",
   "name": "${name}",
-  "description": "${description}",
+  "description": "${wrapper_description}",
   "authors": [
     "ReallyChooseC"
   ],

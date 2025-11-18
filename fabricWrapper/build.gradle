@@ -59,7 +59,7 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand([
-                "description": project.mod_description,
+                "wrapper_description": project.wrapper_description,
                 "homepage": project.mod_homepage,
                 "id": project.mod_id,
                 "license": project.mod_license,
