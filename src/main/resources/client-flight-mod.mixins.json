@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "cn.choosec.clientflightmod.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
   "mixins": [
   ],
   "client": [

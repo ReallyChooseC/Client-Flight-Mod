@@ -31,6 +31,7 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
+String MIXIN_CONFIG_PATH = "${project.mod_id}.mixins.json"
 JavaVersion JAVA_COMPATIBILITY
 if (mcVersion >= 12005) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_21
@@ -73,6 +74,12 @@ processResources {
                 "minecraft_dependency": project.minecraft_dependency,
                 "sources": project.mod_sources
         )
+    }
+
+    filesMatching(MIXIN_CONFIG_PATH) {
+        filter { s ->
+            s.replace('{{COMPATIBILITY_LEVEL}}', "JAVA_${JAVA_COMPATIBILITY.ordinal() + 1}")
+        }
     }
 }
 
