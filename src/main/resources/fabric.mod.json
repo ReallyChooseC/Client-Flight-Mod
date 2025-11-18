@@ -31,5 +31,10 @@
     "${fabric_api}": "*"
   },
   "suggests": {
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "${id}-wrapper"
+    }
   }
 }
