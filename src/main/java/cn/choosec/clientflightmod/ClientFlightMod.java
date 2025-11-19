@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 //#if MC>=12109
 //$$ import net.minecraft.client.KeyMapping.Category;
