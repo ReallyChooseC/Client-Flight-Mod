@@ -12,17 +12,14 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 public class Nofall {
     static void noFallDamage(Minecraft client) {
         LocalPlayer player = client.player;
-        if (player == null || !nofallToggle || player.isFallFlying()) return;
+        if (player == null || player.isFallFlying()) return;
 
-        player.connection.send(
-                new ServerboundMovePlayerPacket.StatusOnly(
-                        true
-                        //#if MC>12101
-                        ,
-                        player.horizontalCollision
-                        //#endif
-                )
-        );
+        player.connection.send(new ServerboundMovePlayerPacket.StatusOnly(
+                true
+                //#if MC>12101
+                , player.horizontalCollision
+                //#endif
+        ));
     }
 
     static void toggleNofall() {

@@ -68,10 +68,8 @@ public class ClientFlightMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.consumeClick()) toggleFlight();
-            noFallDamage(client);
-            if (forceflightToggle) {
-                forceFlight();
-            }
+            if (nofallToggle) noFallDamage(client);
+            if (forceflightToggle) forceFlight();
         });
     }
 }
