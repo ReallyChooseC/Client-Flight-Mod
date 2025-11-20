@@ -45,7 +45,7 @@ public class ClientFlightMod implements ClientModInitializer {
                 "key.clientflightmod.toggleflight",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_UNKNOWN,
-                "category.clientflightmod.main"));
+                "key.category.clientflightmod.main"));
         //#else
         //$$ Category clientflightmodCategory = KeyMapping.Category
         //$$         .register(ResourceLocation.fromNamespaceAndPath("clientflightmod", "main"));
@@ -68,7 +68,7 @@ public class ClientFlightMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.consumeClick()) toggleFlight();
-            if (nofallToggle) noFallDamage(client);
+            if (nofallToggle) noFallDamage(client);;
             if (forceflightToggle) forceFlight();
         });
     }

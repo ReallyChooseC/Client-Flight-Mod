@@ -81,16 +81,6 @@ processResources {
             s.replace('{{COMPATIBILITY_LEVEL}}', "JAVA_${JAVA_COMPATIBILITY.ordinal() + 1}")
         }
     }
-
-    filesMatching("assets/client-flight-mod/lang/*.json") {
-        filter { line ->
-            if (mcVersion > 12108) {
-                line.replace('"category.clientflightmod.main"', '"key.category.clientflightmod.main"')
-            } else {
-                line
-            }
-        }
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {

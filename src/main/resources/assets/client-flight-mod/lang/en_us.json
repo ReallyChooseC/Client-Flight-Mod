@@ -4,7 +4,7 @@
   "clientflightmod.enabled": "§aEnabled",
   "clientflightmod.disabled": "§cDisabled",
   "key.clientflightmod.toggleflight": "Toggle Flight",
-  "category.clientflightmod.main": "Client Flight Mod",
+  "key.category.clientflightmod.main": "Client Flight Mod",
   "clientflightmod.elytra_toggle": "Elytra Boost",
   "clientflightmod.nofall_toggle": "No Fall Damage",
   "clientflightmod.speed_set": "Speed set to %.2f",
