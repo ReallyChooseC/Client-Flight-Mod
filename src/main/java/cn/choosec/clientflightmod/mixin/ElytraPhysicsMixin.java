@@ -25,10 +25,13 @@ public class ElytraPhysicsMixin {
     private void onTravel(Vec3 movementInput, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity)(Object)this;
         if (entity instanceof LocalPlayer player) {
-            if (player.isFallFlying() && elytraToggle && player.getAbilities().mayfly) {
-                ci.cancel();
-                handleElytraMovement(Minecraft.getInstance());
-            }
+            if (player.isFallFlying() && player.getAbilities().mayfly)
+                if (elytraToggle){
+                    ci.cancel();
+                    handleElytraMovement(Minecraft.getInstance());
+                } else if (player.getAbilities().flying) {
+                    player.stopFallFlying();
+                }
         }
     }
 
