@@ -1,7 +1,7 @@
 plugins {
     id 'base'
     id 'maven-publish'
-    id 'fabric-loom' version '1.13-SNAPSHOT' apply false
+    id 'fabric-loom' version '1.14-SNAPSHOT' apply false
     id 'com.replaymod.preprocess' version 'd452ef7612'
 }
 
@@ -12,12 +12,14 @@ preprocess {
     def mc12004 = createNode('1.20.4', 1_20_04, 'mojang')
     def mc12101 = createNode('1.21.1', 1_21_01, 'mojang')
     def mc12104 = createNode('1.21.4', 1_21_04, 'mojang')
+    def mc12108 = createNode('1.21.8', 1_21_08, 'mojang')
     def mc12110 = createNode('1.21.10', 1_21_10, 'mojang')
 
     mc12004.link(mc12001, null)
     mc12101.link(mc12004, null)
     mc12104.link(mc12101, null)
-    mc12104.link(mc12110, null)
+    mc12104.link(mc12108, null)
+    mc12108.link(mc12110, null)
 }
 
 tasks.register('buildAndGather') {
