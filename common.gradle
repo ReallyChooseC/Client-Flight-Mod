@@ -1,8 +1,17 @@
+final int mcVersion = project.mcVersion
+final boolean unobfuscated = mcVersion >= 26_00_00
+
 apply plugin: 'maven-publish'
-apply plugin: 'fabric-loom'
+apply plugin: unobfuscated ? 'net.fabricmc.fabric-loom' : 'net.fabricmc.fabric-loom-remap'
 apply plugin: 'com.replaymod.preprocess'
 
-int mcVersion = project.mcVersion
+configurations {
+    if (unobfuscated) {
+        runtimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
+    } else {
+        modRuntimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
+}
 
 version = project.mod_version
 group = project.maven_group
@@ -24,16 +33,41 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+    if (!unobfuscated) {
+        mappings loom.officialMojangMappings()
+    }
+
+    // from https://github.com/TISUnion/Carpet-TIS-Addition/blob/master/common.gradle#L41-L54
+    def processDependency = { dep ->
+        // https://github.com/FabricMC/fabric-loader/issues/783
+        if (dep instanceof ModuleDependency) {
+            if (!(dep.group == 'net.fabricmc' && dep.name == 'fabric-loader')) {
+                dep.exclude group: 'net.fabricmc', module: 'fabric-loader'
+            }
+        }
+        return dep
+    }
+    def autoImplementation = { Object... args -> processDependency(unobfuscated ? implementation(*args) : modImplementation(*args)) }
+    def autoInclude = { Object... args ->
+        if (unobfuscated) {
+            include(*args)
+            implementation(*args)
+        } else {
+            modImplementation(*args)
+        }
+    }
+
+    autoImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    autoImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    autoInclude "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
+    autoInclude("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 String MIXIN_CONFIG_PATH = "${project.mod_id}.mixins.json"
 JavaVersion JAVA_COMPATIBILITY
-if (mcVersion >= 12005) {
+if (mcVersion >= 260000) {
+    JAVA_COMPATIBILITY = JavaVersion.VERSION_25
+} else if (mcVersion >= 12005) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_21
 } else if (mcVersion >= 11800) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_17
@@ -45,6 +79,12 @@ loom {
     runConfigs.configureEach {
         ideConfigGenerated = true
         runDir '../../run'
+    }
+
+    if (!unobfuscated) {
+        mixin {
+            useLegacyMixinAp = true
+        }
     }
 }
 
@@ -97,6 +137,10 @@ java {
 jar {
     from(rootProject.file('LICENSE')) {
         rename { "${it}_${project.archives_base_name}" }
+    }
+
+    if (!unobfuscated) {
+        exclude 'client-flight-mod-refmap.json'
     }
 }
 

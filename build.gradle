@@ -1,12 +1,13 @@
 plugins {
     id 'base'
     id 'maven-publish'
-    id 'fabric-loom' version '1.14-SNAPSHOT' apply false
-    id 'com.replaymod.preprocess' version 'd452ef7612'
+    id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT' apply false
+    id 'net.fabricmc.fabric-loom-remap' version '1.15-SNAPSHOT' apply false
+    id 'com.replaymod.preprocess' version 'c5abb4fb12'
 }
 
 preprocess {
-    strictExtraMappings = true
+    strictExtraMappings = false
 
     def mc12001 = createNode('1.20.1', 1_20_01, 'mojang')
     def mc12004 = createNode('1.20.4', 1_20_04, 'mojang')
@@ -15,6 +16,7 @@ preprocess {
     def mc12108 = createNode('1.21.8', 1_21_08, 'mojang')
     def mc12110 = createNode('1.21.10', 1_21_10, 'mojang')
     def mc12111 = createNode('1.21.11', 1_21_11, 'mojang')
+    def mc260100 = createNode('26.1', 26_01_00, 'mojang')
 
     mc12004.link(mc12001, null)
     mc12101.link(mc12004, null)
@@ -22,6 +24,11 @@ preprocess {
     mc12104.link(mc12108, null)
     mc12108.link(mc12110, null)
     mc12110.link(mc12111, null)
+    mc12111.link(mc260100, null)
+
+    for (final def node in getNodes()) {
+        findProject(node.project).ext.mcVersion = node.mcVersion
+    }
 }
 
 tasks.register('buildAndGather') {
@@ -72,6 +79,13 @@ tasks.register('buildAndGather') {
 
 static def convertDependencyToSuffix(String dependency) {
     def dep = dependency.replaceAll(/\s+/, '')
+
+    def exactPattern = ~/^([0-9.]+)$/
+    def exactMatcher = exactPattern.matcher(dep)
+    if (exactMatcher.find()) {
+        def version = exactMatcher.group(1)
+        return "${version}"
+    }
 
     def rangePattern = ~/>=([0-9.]+)<=([0-9.]+)/
     def rangeMatcher = rangePattern.matcher(dep)
