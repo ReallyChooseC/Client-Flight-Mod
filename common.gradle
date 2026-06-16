@@ -131,7 +131,7 @@ jar {
         rename { "${it}_${project.archives_base_name}" }
     }
 
-    if (!unobfuscated) {
+    if (unobfuscated) {
         exclude 'client-flight-mod-refmap.json'
     }
 }

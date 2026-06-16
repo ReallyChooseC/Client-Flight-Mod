@@ -2,6 +2,7 @@
   "required": true,
   "package": "cn.choosec.clientflightmod.mixin",
   "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
+  "refmap": "client-flight-mod-refmap.json",
   "mixins": [
   ],
   "client": [
