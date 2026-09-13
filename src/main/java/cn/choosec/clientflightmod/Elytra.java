@@ -54,7 +54,7 @@ public class Elytra {
     }
 
     static void setSpeed(double value) {
-        speed = Math.max(0, value);
+        speed = Config.sanitizeSpeed(value);
         saveConfig();
         sendFeedback("clientflightmod.speed_set", speed);
     }

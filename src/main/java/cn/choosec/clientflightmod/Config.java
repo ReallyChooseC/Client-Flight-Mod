@@ -6,6 +6,8 @@ import java.util.Properties;
 import static cn.choosec.clientflightmod.ClientFlightMod.*;
 
 public class Config {
+    private static final double DEFAULT_SPEED = 1.0;
+
     static void loadConfig() {
         try {
             if (!CONFIG_FILE.exists()) createDefaultConfig();
@@ -14,7 +16,7 @@ public class Config {
                 props.load(input);
                 elytraToggle = Boolean.parseBoolean(props.getProperty("elytratoggle", "true"));
                 nofallToggle = Boolean.parseBoolean(props.getProperty("nofalltoggle", "true"));
-                speed = Math.max(0, Double.parseDouble(props.getProperty("speed", "1.0")));
+                speed = sanitizeSpeed(Double.parseDouble(props.getProperty("speed", String.valueOf(DEFAULT_SPEED))));
                 forceflightToggle = Boolean.parseBoolean(props.getProperty("forceflighttoggle", "false"));
             }
         } catch (Exception e) {
@@ -47,11 +49,16 @@ public class Config {
             Properties props = new Properties();
             props.setProperty("elytratoggle", String.valueOf(elytraToggle));
             props.setProperty("nofalltoggle", String.valueOf(nofallToggle));
+            speed = sanitizeSpeed(speed);
             props.setProperty("speed", String.valueOf(speed));
             props.setProperty("forceflighttoggle", String.valueOf(forceflightToggle));
             props.store(output, null);
         } catch (IOException e) {
             LOGGER.error("Failed to save config", e);
         }
+    }
+
+    static double sanitizeSpeed(double value) {
+        return Double.isFinite(value) ? Math.max(0.0, value) : DEFAULT_SPEED;
     }
 }

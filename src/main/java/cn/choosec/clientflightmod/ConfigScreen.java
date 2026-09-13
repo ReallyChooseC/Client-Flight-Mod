@@ -47,7 +47,7 @@ public class ConfigScreen {
                 .setMin(0.0)
                 .setMax(10.0)
                 .setTooltip(Component.translatable("config.clientflightmod.speed.tooltip"))
-                .setSaveConsumer(value -> ClientFlightMod.speed = value)
+                .setSaveConsumer(value -> ClientFlightMod.speed = Config.sanitizeSpeed(value))
                 .build());
 
         return builder.build();
