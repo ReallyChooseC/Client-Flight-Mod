@@ -16,7 +16,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 //#endif
 import net.minecraft.client.KeyMapping;
-import org.lwjgl.glfw.GLFW;
 //#if MC>=12109
 //$$ import net.minecraft.client.KeyMapping.Category;
 //$$ import net.minecraft.resources.ResourceLocation;
@@ -51,8 +50,8 @@ public class ClientFlightMod implements ClientModInitializer {
         //#if MC<12109
         flyKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 "key.clientflightmod.toggleflight",
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_UNKNOWN,
+                InputConstants.UNKNOWN.getType(),
+                InputConstants.UNKNOWN.getValue(),
                 "key.category.clientflightmod.main"));
         //#else
         //$$ Category clientflightmodCategory = KeyMapping.Category
@@ -63,8 +62,8 @@ public class ClientFlightMod implements ClientModInitializer {
         //$$ flyKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
         //$$ //#endif
         //$$         "key.clientflightmod.toggleflight",
-        //$$         InputConstants.Type.KEYSYM,
-        //$$         GLFW.GLFW_KEY_UNKNOWN,
+        //$$         InputConstants.UNKNOWN.getType(),
+        //$$         InputConstants.UNKNOWN.getValue(),
         //$$         clientflightmodCategory));
         //#endif
 
@@ -92,8 +91,7 @@ public class ClientFlightMod implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (flyKey.consumeClick()) toggleFlight();
-            if (nofallToggle) noFallDamage(client);
-            if (forceflightToggle) forceFlight();
+            tickFlight();
         });
     }
 }
