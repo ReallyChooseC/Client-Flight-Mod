@@ -93,7 +93,11 @@ public class ElytraPhysicsMixin {
         }
 
         player.setDeltaMovement(horizontal.add(0, vertical, 0));
+        //#if MC>=260300
+        //$$ player.syncVelocity = true;
+        //#else
         player.hurtMarked = true;
+        //#endif
 
         player.move(MoverType.SELF, player.getDeltaMovement());
     }

@@ -17,6 +17,7 @@ preprocess {
     def mc12110 = createNode('1.21.10', 1_21_10, 'mojang')
     def mc12111 = createNode('1.21.11', 1_21_11, 'mojang')
     def mc260100 = createNode('26.1', 26_01_00, 'mojang')
+    def mc260300 = createNode('26.3', 26_03_00, 'mojang')
 
     mc12004.link(mc12001, null)
     mc12101.link(mc12004, null)
@@ -25,6 +26,7 @@ preprocess {
     mc12108.link(mc12110, null)
     mc12110.link(mc12111, null)
     mc12111.link(mc260100, null)
+    mc260100.link(mc260300, null)
 
     for (final def node in getNodes()) {
         findProject(node.project).ext.mcVersion = node.mcVersion
@@ -43,6 +45,7 @@ tasks.register('buildAndGather') {
 
     doLast {
         def rootBuildLibs = rootProject.layout.buildDirectory.dir('libs/versions').get().asFile
+        delete fileTree(rootBuildLibs)
         rootBuildLibs.mkdirs()
 
         subprojects {
@@ -58,7 +61,7 @@ tasks.register('buildAndGather') {
 
             copy {
                 from(subprojectLibs) {
-                    include '*.jar'
+                    include "${project.archives_base_name}-${project.version}.jar"
                     exclude '*-dev.jar', '*-sources.jar', '*-shadow.jar'
                 }
                 into rootBuildLibs
