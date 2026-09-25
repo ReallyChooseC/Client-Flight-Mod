@@ -6,9 +6,7 @@ apply plugin: unobfuscated ? 'net.fabricmc.fabric-loom' : 'net.fabricmc.fabric-l
 apply plugin: 'com.replaymod.preprocess'
 
 configurations {
-    if (unobfuscated) {
-        runtimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
-    } else {
+    if (!unobfuscated) {
         modRuntimeOnly.exclude group: 'net.fabricmc', module: 'fabric-loader'
     }
 }
@@ -65,10 +63,8 @@ if (mcVersion >= 260000) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_25
 } else if (mcVersion >= 12005) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_21
-} else if (mcVersion >= 11800) {
-    JAVA_COMPATIBILITY = JavaVersion.VERSION_17
 } else {
-    JAVA_COMPATIBILITY = JavaVersion.VERSION_1_8
+    JAVA_COMPATIBILITY = JavaVersion.VERSION_17
 }
 
 loom {
@@ -82,6 +78,10 @@ loom {
             useLegacyMixinAp = true
         }
     }
+}
+
+tasks.named('runClient') {
+    jvmArgs '-XX:StackShadowPages=32'
 }
 
 processResources {

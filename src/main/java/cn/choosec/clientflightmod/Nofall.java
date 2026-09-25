@@ -7,6 +7,9 @@ import static cn.choosec.clientflightmod.Feedback.*;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+//#if MC>=260300
+//$$ import net.minecraft.network.protocol.game.ServerboundClientTickEndPacket;
+//#endif
 
 public class Nofall {
     private static final double LANDING_RESET_OFFSET = 0.01;
@@ -30,6 +33,9 @@ public class Nofall {
                 , player.horizontalCollision
                 //#endif
         ));
+        //#if MC>=260300
+        //$$ player.connection.send(ServerboundClientTickEndPacket.INSTANCE);
+        //#endif
     }
 
     static void toggleNofall() {

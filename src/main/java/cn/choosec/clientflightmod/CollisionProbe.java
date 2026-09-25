@@ -14,6 +14,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+//#if MC>=260300
+//$$ import net.minecraft.network.protocol.game.ServerboundClientTickEndPacket;
+//#endif
 
 import java.util.Set;
 //#endif
@@ -27,11 +30,17 @@ public final class CollisionProbe {
     private static float expectedPitch;
     private static int expectedTick = -100;
     private static int sequence;
+    //#if MC>=260300
+    //$$ private static int lastProbeTick = -100;
+    //#endif
 
     public static void tick() {
         LocalPlayer player = Minecraft.getInstance().player;
         if (!Flight.isClientFlying(player)) {
             clear();
+            //#if MC>=260300
+            //$$ lastProbeTick = -100;
+            //#endif
             return;
         }
         if (expectedPosition != null) {
@@ -39,6 +48,9 @@ public final class CollisionProbe {
             return;
         }
         if (player.tickCount - expectedTick < 2) return;
+        //#if MC>=260300
+        //$$ if (player.tickCount - lastProbeTick < 2) return;
+        //#endif
 
         Vec3 target = findCollisionTarget(player);
         if (target == null) return;
@@ -47,11 +59,20 @@ public final class CollisionProbe {
         expectedTick = player.tickCount;
         expectedPitch = markerPitch(player.getXRot());
 
+        //#if MC>=260300
+        //$$ lastProbeTick = player.tickCount;
+        //#endif
         player.connection.send(new ServerboundMovePlayerPacket.PosRot(
                 player.getX(), player.getY(), player.getZ(), player.getYRot(), expectedPitch, false,
                 player.horizontalCollision));
+        //#if MC>=260300
+        //$$ player.connection.send(ServerboundClientTickEndPacket.INSTANCE);
+        //#endif
         player.connection.send(new ServerboundMovePlayerPacket.Pos(
                 target.x, target.y, target.z, false, player.horizontalCollision));
+        //#if MC>=260300
+        //$$ player.connection.send(ServerboundClientTickEndPacket.INSTANCE);
+        //#endif
     }
 
     public static boolean matches(PositionMoveRotation change, Set<Relative> relatives, Entity entity) {
@@ -77,8 +98,10 @@ public final class CollisionProbe {
         //#else
         player.connection.send(new ServerboundAcceptTeleportationPacket(packet.id()));
         //#endif
+        //#if MC<260300
         player.connection.send(new ServerboundMovePlayerPacket.PosRot(
                 player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), false, false));
+        //#endif
         return true;
     }
 
